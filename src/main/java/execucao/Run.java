@@ -38,6 +38,6 @@ public class Run {
 		
 
 		Casa casa = entityManager.find(Casa.class, new Long(3L));
-		System.out.println(casa);		
+		System.out.println(casa);
 	}
 }

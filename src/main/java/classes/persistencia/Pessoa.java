@@ -1,11 +1,17 @@
 package classes.persistencia;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 
 @Entity(name = "pessoa")
 public class Pessoa {
@@ -20,6 +26,10 @@ public class Pessoa {
 	
 	@ManyToOne
 	private Casa casa;
+	
+	@ManyToMany(mappedBy = "membros", fetch = FetchType.EAGER)
+	@OrderBy("nome")
+	private List<Equipe> equipes;
 	
 	public Pessoa() {
 	}
@@ -50,7 +60,13 @@ public class Pessoa {
 
 	@Override
 	public String toString() {
-		return "Pessoa [id=" + id + ", nome=" + nome + ", casa=" + casa.getId() + "]";
+		String casaId = casa != null ? casa.getId().toString() : "<null>";
+		List<String> nomesEquipes = new ArrayList<String>();
+		
+		for (Equipe equipe : equipes) {
+			nomesEquipes.add(equipe.getNome());
+		}
+		return "Pessoa [id=" + id + ", nome=" + nome + ", casa=" + casaId + ", equipes=" + nomesEquipes + "]";
 	}
 
 }
